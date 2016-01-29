@@ -1,0 +1,41 @@
+<div>
+  <h1>My first AngularJS MVC Todo application.</h1>
+
+  <h2 style="color: gray">todos</h2>
+
+  <div class="frame">
+    <input type="checkbox" ng-click="main.changeAllTodoStates($event)" ng-checked="main.todos.length && main.todos.length === (main.todos | filter: {isCompleted: true}).length">
+    <input id="todoNameFld" ng-keypress="main.onEnterPress($event)" placeholder="What needs to be done?">
+  </div>
+
+  <ul>
+    <li ng-repeat="todo in main.todos | filter:{isCompleted: isCompletedFilter}" data-id="{{todo.id}}" class="frame"
+        ng-class="{inactive: todo.isCompleted}"
+        ng-dblclick="needShowInput = needShowInput ? false : true">
+
+      <div ng-hide="needShowInput">
+        <input type="checkbox" ng-model="todo.isCompleted">
+        {{todo.name}}
+        <button ng-click="main.onDeletePress($event)" class="deleteBtn">x</button>
+      </div>
+      <input ng-show="needShowInput" ng-blur="needShowInput=false" ng-value="todo.name" focus-on ng-model="todo.name" ng-keypress="main.saveValue($event)">
+    </li>
+  </ul>
+
+  <ng-pluralize count="(main.todos | filter: {isCompleted: false}).length"
+     when="{
+      '0': 'No items left',
+      'one': '1 item left',
+      'other': '{} items left'
+    }">
+  </ng-pluralize>
+  <br><br>
+
+  <div id="filters" ng-show="main.todos.length">
+    <button ng-click="isCompletedFilter = undefined">All</button>
+    <button ng-click="isCompletedFilter = false">Active</button>
+    <button ng-click="isCompletedFilter = true">Completed</button>
+    <button ng-click="main.deleteCompleted()" ng-show="(main.todos | filter: {isCompleted: true}).length">Clear completed</button>
+  </div>
+
+</div>
