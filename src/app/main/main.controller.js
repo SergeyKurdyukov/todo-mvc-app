@@ -3,12 +3,12 @@
 
   angular
     .module('mvcTodoAngularApp')
-    .controller('MainController', MainController);
+    .controller('MainController', ['$resource', MainController]);
 
-  function MainController () {
+  function MainController ($resource) {
 
     var vm = this;
-    vm.todos = []; // The array of objects {name: 'input field value', isCompleted: true, id: 0}
+    vm.todos = []; // The array of objects {description: 'input field value', done: true, _id: 0}
 
     var id = 0;
     vm.onEnterPress = function (ev) {
@@ -16,7 +16,7 @@
       // Add a new list item by Enter key
       if (ev.charCode === 13) {
         var input = ev.currentTarget;
-        vm.todos.push({name: input.value, isCompleted: false, id: id});
+        vm.todos.push({description: input.value, done: false, _id: id});
         input.value = '';
       }
     }
@@ -32,7 +32,7 @@
       var todos = vm.todos;
       // Find the list item
       for(var i = 0; i < todos.length; i++) {
-        if (todos[i].id === Number(id)) {
+        if (todos[i]._id === Number(id)) {
           return {item: todos[i], index: i};
         }
       }
@@ -42,7 +42,7 @@
     vm.deleteCompleted = function () {
       // Filters out completed items
       var uncompletedTodos = vm.todos.filter(function (todo) {
-        return !todo.isCompleted;
+        return !todo.done;
       });
       vm.todos = uncompletedTodos;
     }
@@ -50,7 +50,7 @@
     vm.changeAllTodoStates = function (ev) {
       var checked = ev.currentTarget.checked;
       angular.forEach(vm.todos, function (todo) {
-        todo.isCompleted = checked;
+        todo.done = checked;
       });
     }
 
@@ -59,5 +59,6 @@
         ev.currentTarget.blur();
       }
     }
+
   }
 })();
