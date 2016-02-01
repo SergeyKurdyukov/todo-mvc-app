@@ -9,7 +9,7 @@
   </div>
 
   <ul>
-    <li ng-repeat="todo in main.todos | filter:{done: isDoneFilter}" data-id="{{todo._id}}" class="frame"
+    <li ng-repeat="todo in main.todos | filter:{done: isDoneFilter} track by todo._id" data-id="{{todo._id}}" class="frame"
         ng-class="{inactive: todo.done}"
         ng-dblclick="needShowInput = needShowInput ? false : true">
 
