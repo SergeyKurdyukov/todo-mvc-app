@@ -16,7 +16,7 @@
       <div ng-hide="needShowInput">
         <input type="checkbox" ng-model="todo.done" ng-change="main.editTodo(todo);">
         {{todo.description}}
-        <button ng-click="main.onDeletePress($event)" class="deleteBtn">x</button>
+        <button ng-click="main.onDeletePress(todo._id)" class="deleteBtn">x</button>
       </div>
       <input ng-show="needShowInput" ng-blur="needShowInput=false; main.editTodo(todo);" ng-value="todo.description" focus-on ng-model="todo.description" ng-keypress="main.saveValue($event)">
     </li>

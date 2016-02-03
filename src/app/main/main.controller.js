@@ -36,22 +36,8 @@
       }
     }
 
-    vm.onDeletePress = function (ev) {
-      var todo = findById(ev);
-      deleteTodo(todo.item._id, true);
-    }
-
-    var findById = function (ev) {
-      var li = ev.currentTarget.parentElement.parentElement;
-      var id = li.attributes['data-id'].value;
-      var todos = vm.todos;
-      // Find the list item
-      for(var i = 0; i < todos.length; i++) {
-        if (todos[i]._id === id) {
-          return {item: todos[i], index: i};
-        }
-      }
-      return {};
+    vm.onDeletePress = function (id) {
+      deleteTodo(id, true);
     }
 
     vm.deleteCompleted = function () {
