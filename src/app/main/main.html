@@ -18,7 +18,7 @@
         {{todo.description}}
         <button ng-click="main.onDeletePress(todo._id)" class="deleteBtn">x</button>
       </div>
-      <input ng-show="needShowInput" ng-blur="needShowInput=false; main.editTodo(todo);" ng-value="todo.description" focus-on ng-model="todo.description" ng-keypress="main.saveValue($event)">
+      <input ng-show="needShowInput" ng-blur="needShowInput=false; main.editTodo(todo);" ng-value="todo.description" focus-on blur-by-enter ng-model="todo.description" >
     </li>
   </ul>
 

@@ -57,12 +57,6 @@
       });
     }
 
-    vm.saveValue = function (ev) {
-      if (ev.charCode === 13) { // Enter key
-        ev.currentTarget.blur();
-      }
-    }
-
     vm.editTodo = function (todo) {
       updateTodo(todo);
     }
