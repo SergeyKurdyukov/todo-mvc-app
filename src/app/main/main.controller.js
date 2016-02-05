@@ -31,18 +31,12 @@
     }
 
     vm.deleteCompleted = function () {
-      var completedTodos = vm.todos.filter(function (todo) {
-        return todo.done;
-      });
 
-      angular.forEach(completedTodos, function (todo, key) {
-        var deleteTodoResource = todoAPI.delete(todo._id);
-        if (completedTodos.length - 1 === key)
-        {
-          deleteTodoResource.$promise.then(function () {
-            vm.todos = todoAPI.getList();
-          });
-        }
+      var completedTodoPromises = vm.todos.filter(function (todo) {
+        return todo.done ? todoAPI.delete(todo._id).$promise : null;
+      });
+      Promise.all(completedTodoPromises).then(function () {
+        vm.todos = todoAPI.getList();
       });
     }
 
