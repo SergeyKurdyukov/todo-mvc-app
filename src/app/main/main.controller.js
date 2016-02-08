@@ -17,7 +17,8 @@
         var newTodoResource = todoAPI.create(input.value);
         newTodoResource.$promise.then(function () {
           vm.todos = todoAPI.getList();
-        });
+        })
+        .catch(console.log.bind(console));
 
         input.value = '';
       }
@@ -27,7 +28,8 @@
       var deleteTodoResource = todoAPI.delete(id);
       deleteTodoResource.$promise.then(function () {
         vm.todos = todoAPI.getList();
-      });
+      })
+      .catch(console.log.bind(console));
     }
 
     vm.deleteCompleted = function () {
@@ -37,7 +39,8 @@
       });
       Promise.all(completedTodoPromises).then(function () {
         vm.todos = todoAPI.getList();
-      });
+      })
+      .catch(console.log.bind(console));
     }
 
     vm.changeAllTodoStates = function (ev) {
@@ -51,7 +54,8 @@
       var updateTodoResource = todoAPI.update(todo);
       updateTodoResource.$promise.then(function () {
         vm.todos = todoAPI.getList();
-      });
+      })
+      .catch(console.log.bind(console));
     }
 
     vm.todos = todoAPI.getList();
