@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('mvcTodoAngularApp', ['ngMessages', 'ngResource', 'ngRoute', 'toastr']);
+    .module('mvcTodoAngularApp', ['ngMessages', 'ngRoute', 'toastr', 'restangular']);
 
 })();

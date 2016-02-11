@@ -6,64 +6,55 @@
 
   angular
     .module('mvcTodoAngularApp')
-    .factory('todoAPI', ['$resource', function ($resource) {
+    .factory('todoAPI', ['Restangular', function (Restangular) {
 
-      var externalUrl = 'http://192.168.52.202:3000/todos';
-      var TodoAPI = $resource(externalUrl + '/:id', {}, {
-        save: {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json" // Set Content-Type explicitly to prevent troubles with the server
-          }
-        },
-        update: {
-          method: 'PUT',
-          headers: {
-            "Content-Type": "application/json" // Set Content-Type explicitly to prevent troubles with the server
-          }
-        }
-      });
-
+      var externalUrl = 'http://192.168.52.202:3000';
+      Restangular.setBaseUrl(externalUrl);
+      Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
+      Restangular.setRestangularFields({id: "_id"});
+      var todoApi = Restangular.all('todos');
 
       var todoObj = {
 
         // Get todo list from the server.
-        getList: function () {
-          return TodoAPI.query({},
-            function (todos) {},
+        getList: function (successCbk) {
+          successCbk = successCbk || function (todos) { return todos; };
+          return todoApi.getList().then(
+            successCbk,
             function (errObj) { alert('Cannot get the todo list. Reason: ' + (errObj.statusText || 'unknown')); }
-          );
+          )
+          .catch(console.log.bind(console));
         },
 
         // Add a new todo item.
         create: function (description) {
-          return TodoAPI.save({},
-            // The description just used for creation
-            {description: description, done: false},
-            function () {},
+
+          return todoApi.post({description: description, done: false}).then(
+            function (resp)   { return resp; },
             function (errObj) { alert('Cannot add a new todo item. Reason: ' + (errObj.statusText || 'unknown')); }
-          );
+          )
+          .catch(console.log.bind(console));
         },
 
-        // Delete the todo by id.
-        delete: function (id) {
-          return TodoAPI.delete(
-            {id: id},
-            function () {},
+        // Delete the specified todo.
+        delete: function (todo) {
+
+          return todo.remove().then(
+            function (resp)   { return resp; },
             function (errObj) { alert('Cannot delete the todo item. Reason: ' + (errObj.statusText || 'unknown')); }
-          );
+          )
+          .catch(console.log.bind(console));
         },
 
         // Update the existing todo
         update: function (todo) {
-          return TodoAPI.update(
-            {id: todo._id},
-            todo,
-            function () {},
-            function (errObj) { alert('Cannot edit the todo item. Reason: ' + (errObj.statusText || 'unknown')); }
-          );
-        }
 
+          return todo.put().then(
+            function (resp)   { return resp; },
+            function (errObj) { alert('Cannot edit the todo item. Reason: ' + (errObj.statusText || 'unknown')); }
+          )
+          .catch(console.log.bind(console));
+        }
 
       }
       return todoObj;
